@@ -1,4 +1,5 @@
 #!/bin/bash
+echo $RELEASEVER
 
 pushd /etc/yum.repos.d
 for repo in $(ls *.repo)
@@ -9,4 +10,18 @@ popd
 
 cat /etc/yum.repos.d/*.repo | grep baseurl
 
-tdnf list bash
+for f in $(cat updates/$RELEASEVER)
+do
+  tdnf list $f
+  if [ $? -ne 0 ]
+    then exit 1
+  fi
+done
+
+for f in $(cat updates/$RELEASEVER.debuginfo)
+do
+  tdnf --enablerepo=photon-debuginfo list $f
+  if [ $? -ne 0 ]
+    then exit 1
+  fi
+done

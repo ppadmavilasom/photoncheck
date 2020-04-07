@@ -9,4 +9,4 @@ env:
   - RELEASEVER=3.0
 
 script:
-  - docker run --rm -it -v$(pwd):/check -w/check photon:${RELEASEVER} ./ci/repo_check.sh
+  - docker run -e RELEASEVER=${RELEASEVER} --rm -it -v$(pwd):/check -w/check photon:${RELEASEVER} ./ci/repo_check.sh
